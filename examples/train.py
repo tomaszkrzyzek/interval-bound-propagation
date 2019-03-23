@@ -233,7 +233,7 @@ def main(unused_args):
   tf_config = tf.ConfigProto()
   tf_config.gpu_options.allow_growth = True
   with tf.train.SingularMonitoredSession(config=tf_config) as sess:
-    for _ in xrange(FLAGS.steps):
+    for _ in range(FLAGS.steps):
       iteration, loss_value, _ = sess.run(
           [step, train_losses.scalar_losses.nominal_cross_entropy, train_op])
       if iteration % FLAGS.test_every_n == 0:
