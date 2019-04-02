@@ -184,5 +184,10 @@ def create_classification_losses(
                                          weight_mixture))
   # Add a regularization loss.
   regularizers = tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES)
-  train_loss = train_loss + tf.reduce_sum(regularizers)
+  if use_verification:
+    diameter = tf.abs(input_interval_bounds.upper - input_interval_bounds.lower)
+    diameter_loss = tf.losses.mean_squared_error(tf.zeros_like(diameter), diameter)
+    train_loss = train_loss + tf.reduce_sum(regularizers) + diameter_loss
+  else:
+    train_loss = train_loss + tf.reduce_sum(regularizers)
   return losses, train_loss, train_epsilon
